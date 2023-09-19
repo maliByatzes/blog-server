@@ -2,7 +2,7 @@ CREATE TABLE "users" (
   "username" varchar PRIMARY KEY,
   "hashed_password" varchar NOT NULL,
   "email" varchar NOT NULL,
-  "role_id" bigint NOT NULL,
+  "role_id" bigint NOT NULL DEFAULT 2,
   "updated_at" timestamptz NOT NULL DEFAULT '0001-01-01 00:00:00Z',
   "created_at" timestamptz NOT NULL DEFAULT (now())
 );
