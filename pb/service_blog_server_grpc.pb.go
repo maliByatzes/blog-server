@@ -18,122 +18,122 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// BlogServerClient is the client API for BlogServer service.
+// BlogClient is the client API for Blog service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type BlogServerClient interface {
+type BlogClient interface {
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
 }
 
-type blogServerClient struct {
+type blogClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewBlogServerClient(cc grpc.ClientConnInterface) BlogServerClient {
-	return &blogServerClient{cc}
+func NewBlogClient(cc grpc.ClientConnInterface) BlogClient {
+	return &blogClient{cc}
 }
 
-func (c *blogServerClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
+func (c *blogClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
 	out := new(CreateUserResponse)
-	err := c.cc.Invoke(ctx, "/db.BlogServer/CreateUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/db.Blog/CreateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *blogServerClient) LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error) {
+func (c *blogClient) LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error) {
 	out := new(LoginUserResponse)
-	err := c.cc.Invoke(ctx, "/db.BlogServer/LoginUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/db.Blog/LoginUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// BlogServerServer is the server API for BlogServer service.
-// All implementations must embed UnimplementedBlogServerServer
+// BlogServer is the server API for Blog service.
+// All implementations must embed UnimplementedBlogServer
 // for forward compatibility
-type BlogServerServer interface {
+type BlogServer interface {
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
-	mustEmbedUnimplementedBlogServerServer()
+	mustEmbedUnimplementedBlogServer()
 }
 
-// UnimplementedBlogServerServer must be embedded to have forward compatible implementations.
-type UnimplementedBlogServerServer struct {
+// UnimplementedBlogServer must be embedded to have forward compatible implementations.
+type UnimplementedBlogServer struct {
 }
 
-func (UnimplementedBlogServerServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
+func (UnimplementedBlogServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
-func (UnimplementedBlogServerServer) LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error) {
+func (UnimplementedBlogServer) LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginUser not implemented")
 }
-func (UnimplementedBlogServerServer) mustEmbedUnimplementedBlogServerServer() {}
+func (UnimplementedBlogServer) mustEmbedUnimplementedBlogServer() {}
 
-// UnsafeBlogServerServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to BlogServerServer will
+// UnsafeBlogServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to BlogServer will
 // result in compilation errors.
-type UnsafeBlogServerServer interface {
-	mustEmbedUnimplementedBlogServerServer()
+type UnsafeBlogServer interface {
+	mustEmbedUnimplementedBlogServer()
 }
 
-func RegisterBlogServerServer(s grpc.ServiceRegistrar, srv BlogServerServer) {
-	s.RegisterService(&BlogServer_ServiceDesc, srv)
+func RegisterBlogServer(s grpc.ServiceRegistrar, srv BlogServer) {
+	s.RegisterService(&Blog_ServiceDesc, srv)
 }
 
-func _BlogServer_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Blog_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BlogServerServer).CreateUser(ctx, in)
+		return srv.(BlogServer).CreateUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/db.BlogServer/CreateUser",
+		FullMethod: "/db.Blog/CreateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BlogServerServer).CreateUser(ctx, req.(*CreateUserRequest))
+		return srv.(BlogServer).CreateUser(ctx, req.(*CreateUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _BlogServer_LoginUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Blog_LoginUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LoginUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BlogServerServer).LoginUser(ctx, in)
+		return srv.(BlogServer).LoginUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/db.BlogServer/LoginUser",
+		FullMethod: "/db.Blog/LoginUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BlogServerServer).LoginUser(ctx, req.(*LoginUserRequest))
+		return srv.(BlogServer).LoginUser(ctx, req.(*LoginUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// BlogServer_ServiceDesc is the grpc.ServiceDesc for BlogServer service.
+// Blog_ServiceDesc is the grpc.ServiceDesc for Blog service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var BlogServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "db.BlogServer",
-	HandlerType: (*BlogServerServer)(nil),
+var Blog_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "db.Blog",
+	HandlerType: (*BlogServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "CreateUser",
-			Handler:    _BlogServer_CreateUser_Handler,
+			Handler:    _Blog_CreateUser_Handler,
 		},
 		{
 			MethodName: "LoginUser",
-			Handler:    _BlogServer_LoginUser_Handler,
+			Handler:    _Blog_LoginUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

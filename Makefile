@@ -25,4 +25,7 @@ proto:
   --go-grpc_out=pb --go-grpc_opt=paths=source_relative \
   proto/*.proto
 
+server:
+	go run main.go
+
 .PHONY: postgres createdb dropdb migrateup migratedown sqlc test proto

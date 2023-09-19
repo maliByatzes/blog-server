@@ -7,7 +7,7 @@ import "rpc_login_user.proto";
 
 option go_package = "github.com/maliByatzes/blog-server/pb";
 
-service BlogServer {
+service Blog {
   rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {}
   rpc LoginUser (LoginUserRequest) returns (LoginUserResponse) {}
 }
