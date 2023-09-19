@@ -1,2 +1,2 @@
-# Ingore all .env files
-*.env
+*.log
+.vscode
