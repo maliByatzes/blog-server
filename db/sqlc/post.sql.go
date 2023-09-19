@@ -12,29 +12,26 @@ import (
 const createPost = `-- name: CreatePost :one
 INSERT INTO posts (
   username,
-  tag,
   title,
   image_url,
   content,
   category_id
 ) VALUES (
-  $1, $2, $3, $4, $5, $6
-) RETURNING id, username, tag, title, image_url, content, category_id, created_at
+  $1, $2, $3, $4, $5
+) RETURNING id, username, title, image_url, content, category_id, created_at
 `
 
 type CreatePostParams struct {
 	Username   string `json:"username"`
-	Tag        string `json:"tag"`
 	Title      string `json:"title"`
 	ImageUrl   string `json:"image_url"`
 	Content    string `json:"content"`
-	CategoryID string `json:"category_id"`
+	CategoryID int64  `json:"category_id"`
 }
 
 func (q *Queries) CreatePost(ctx context.Context, arg CreatePostParams) (Post, error) {
 	row := q.db.QueryRowContext(ctx, createPost,
 		arg.Username,
-		arg.Tag,
 		arg.Title,
 		arg.ImageUrl,
 		arg.Content,
@@ -44,7 +41,6 @@ func (q *Queries) CreatePost(ctx context.Context, arg CreatePostParams) (Post, e
 	err := row.Scan(
 		&i.ID,
 		&i.Username,
-		&i.Tag,
 		&i.Title,
 		&i.ImageUrl,
 		&i.Content,
@@ -65,7 +61,7 @@ func (q *Queries) DeletePost(ctx context.Context, id int64) error {
 }
 
 const getPost = `-- name: GetPost :one
-SELECT id, username, tag, title, image_url, content, category_id, created_at FROM posts
+SELECT id, username, title, image_url, content, category_id, created_at FROM posts
 WHERE id = $1 LIMIT 1
 `
 
@@ -75,7 +71,6 @@ func (q *Queries) GetPost(ctx context.Context, id int64) (Post, error) {
 	err := row.Scan(
 		&i.ID,
 		&i.Username,
-		&i.Tag,
 		&i.Title,
 		&i.ImageUrl,
 		&i.Content,
@@ -86,21 +81,19 @@ func (q *Queries) GetPost(ctx context.Context, id int64) (Post, error) {
 }
 
 const listPosts = `-- name: ListPosts :many
-SELECT id, username, tag, title, image_url, content, category_id, created_at FROM posts
-WHERE username = $1
+SELECT id, username, title, image_url, content, category_id, created_at FROM posts
 ORDER BY id
-LIMIT $2
-OFFSET $3
+LIMIT $1
+OFFSET $2
 `
 
 type ListPostsParams struct {
-	Username string `json:"username"`
-	Limit    int32  `json:"limit"`
-	Offset   int32  `json:"offset"`
+	Limit  int32 `json:"limit"`
+	Offset int32 `json:"offset"`
 }
 
 func (q *Queries) ListPosts(ctx context.Context, arg ListPostsParams) ([]Post, error) {
-	rows, err := q.db.QueryContext(ctx, listPosts, arg.Username, arg.Limit, arg.Offset)
+	rows, err := q.db.QueryContext(ctx, listPosts, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +104,6 @@ func (q *Queries) ListPosts(ctx context.Context, arg ListPostsParams) ([]Post, e
 		if err := rows.Scan(
 			&i.ID,
 			&i.Username,
-			&i.Tag,
 			&i.Title,
 			&i.ImageUrl,
 			&i.Content,
@@ -134,28 +126,25 @@ func (q *Queries) ListPosts(ctx context.Context, arg ListPostsParams) ([]Post, e
 const updatePost = `-- name: UpdatePost :one
 UPDATE posts
 SET 
-  tag = $2,
-  title = $3,
-  image_url = $4,
-  content = $5,
-  category_id = $6
+  title = $2,
+  image_url = $3,
+  content = $4,
+  category_id = $5
 WHERE id = $1
-RETURNING id, username, tag, title, image_url, content, category_id, created_at
+RETURNING id, username, title, image_url, content, category_id, created_at
 `
 
 type UpdatePostParams struct {
 	ID         int64  `json:"id"`
-	Tag        string `json:"tag"`
 	Title      string `json:"title"`
 	ImageUrl   string `json:"image_url"`
 	Content    string `json:"content"`
-	CategoryID string `json:"category_id"`
+	CategoryID int64  `json:"category_id"`
 }
 
 func (q *Queries) UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, error) {
 	row := q.db.QueryRowContext(ctx, updatePost,
 		arg.ID,
-		arg.Tag,
 		arg.Title,
 		arg.ImageUrl,
 		arg.Content,
@@ -165,7 +154,6 @@ func (q *Queries) UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, e
 	err := row.Scan(
 		&i.ID,
 		&i.Username,
-		&i.Tag,
 		&i.Title,
 		&i.ImageUrl,
 		&i.Content,

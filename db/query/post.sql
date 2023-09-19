@@ -1,13 +1,12 @@
 -- name: CreatePost :one
 INSERT INTO posts (
   username,
-  tag,
   title,
   image_url,
   content,
   category_id
 ) VALUES (
-  $1, $2, $3, $4, $5, $6
+  $1, $2, $3, $4, $5
 ) RETURNING *;
 
 -- name: GetPost :one
@@ -16,19 +15,17 @@ WHERE id = $1 LIMIT 1;
 
 -- name: ListPosts :many
 SELECT * FROM posts
-WHERE username = $1
 ORDER BY id
-LIMIT $2
-OFFSET $3;
+LIMIT $1
+OFFSET $2;
 
 -- name: UpdatePost :one
 UPDATE posts
 SET 
-  tag = $2,
-  title = $3,
-  image_url = $4,
-  content = $5,
-  category_id = $6
+  title = $2,
+  image_url = $3,
+  content = $4,
+  category_id = $5
 WHERE id = $1
 RETURNING *;
 

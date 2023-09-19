@@ -20,11 +20,10 @@ type Category struct {
 type Post struct {
 	ID         int64     `json:"id"`
 	Username   string    `json:"username"`
-	Tag        string    `json:"tag"`
 	Title      string    `json:"title"`
 	ImageUrl   string    `json:"image_url"`
 	Content    string    `json:"content"`
-	CategoryID string    `json:"category_id"`
+	CategoryID int64     `json:"category_id"`
 	CreatedAt  time.Time `json:"created_at"`
 }
 

@@ -27,11 +27,10 @@ CREATE TABLE "sessions" (
 CREATE TABLE "posts" (
   "id" bigserial PRIMARY KEY,
   "username" varchar NOT NULL,
-  "tag" varchar NOT NULL,
   "title" varchar NOT NULL,
   "image_url" varchar NOT NULL,
   "content" text NOT NULL,
-  "category_id" varchar NOT NULL,
+  "category_id" bigint NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 

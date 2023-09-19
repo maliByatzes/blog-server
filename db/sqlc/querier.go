@@ -23,7 +23,7 @@ type Querier interface {
 	GetRole(ctx context.Context, id int64) (Role, error)
 	GetSession(ctx context.Context, id uuid.UUID) (Session, error)
 	GetUser(ctx context.Context, username string) (User, error)
-	ListCategories(ctx context.Context, arg ListCategoriesParams) ([]Category, error)
+	ListCategories(ctx context.Context) ([]Category, error)
 	ListPosts(ctx context.Context, arg ListPostsParams) ([]Post, error)
 	UpdateCategory(ctx context.Context, arg UpdateCategoryParams) (Category, error)
 	UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, error)
