@@ -17,7 +17,7 @@ type Server struct {
 	tokenMaker token.Maker
 }
 
-// NewServer creates a new gRPC server y
+// NewServer creates a new gRPC server
 func NewServer(config util.Config, store db.Store) (*Server, error) {
 	tokenMaker, err := token.NewPasetoMaker(config.TokenSymmetricKey)
 	if err != nil {
