@@ -28,4 +28,7 @@ proto:
 server:
 	go run main.go
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc test proto
+evans:
+	evans --host localhost --port 9090 -r repl
+
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test proto evans
