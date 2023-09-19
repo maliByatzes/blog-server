@@ -23,6 +23,7 @@ proto:
 	rm -f pb/*.go
 	protoc --proto_path=proto --go_out=pb --go_opt=paths=source_relative \
   --go-grpc_out=pb --go-grpc_opt=paths=source_relative \
+	--grpc-gateway_out=pb --grpc-gateway_opt=paths=source_relative \
   proto/*.proto
 
 server:
@@ -31,4 +32,7 @@ server:
 evans:
 	evans --host localhost --port 9090 -r repl
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc test proto evans
+mock:
+	mockgen -package mockdb -destination db/mock/store.go github.com/maliByatzes/blog-server/db/sqlc Store
+
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test proto evans server mock
