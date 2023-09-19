@@ -54,3 +54,5 @@ ALTER TABLE "users" ADD FOREIGN KEY ("role_id") REFERENCES "roles" ("id");
 ALTER TABLE "sessions" ADD FOREIGN KEY ("username") REFERENCES "users" ("username");
 
 ALTER TABLE "posts" ADD FOREIGN KEY ("username") REFERENCES "users" ("username");
+
+INSERT INTO "roles" (id, role_name) VALUES (1, 'SUPERUSER'), (2, 'USER');
